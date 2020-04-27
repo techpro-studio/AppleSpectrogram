@@ -43,11 +43,6 @@ float calculate_magnitude(float2 complex) {
     return result;
 }
 
-kernel void magnitude(device const float* inputReal, device const float* inputImaginary, device const unsigned int *size, device float* output, uint index[[thread_position_in_grid]]) {
-    if (index > *size) return;
-    output[index] = calculate_magnitude(float2(inputReal[index], inputImaginary[index]));
-}
-
 kernel void spectrogram_real(device const float *input, device const config *config, device float *output, uint index[[thread_position_in_grid]])
 {
     if (index >= config->ouputLength) { return; }
