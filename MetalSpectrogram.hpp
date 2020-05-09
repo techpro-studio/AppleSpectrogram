@@ -18,12 +18,12 @@
 template <typename Input, unsigned int size, unsigned int nfft, unsigned int noverlap>
 class MetalSpectrogram: public BaseSpectrogram<Input, size, nfft, noverlap>, protected NSObjectCPPProxy{
     typedef BaseSpectrogram<Input, size, nfft, noverlap> Base;
-    using typename Base::OutputMatrix;
+    using typename Base::Output;
 public:
     MetalSpectrogram(const void* gpu): BaseSpectrogram<Input, size, nfft, noverlap>(), NSObjectCPPProxy((__bridge void *)[[_MetalSpectrogram alloc] initWithDevice:(__bridge id<MTLDevice>)gpu inputType: Base::inputType andSCP: Base::scp]){}
 
-    OutputMatrix calculate(const Tensor<Input, size>& input) override{
-        OutputMatrix output;
+    Output calculate(const Tensor<Input, size>& input) override{
+        Output output;
         auto spectrogram = (__bridge _MetalSpectrogram*)ptr;
         [spectrogram compute: input.value output:output.value];
         return output;

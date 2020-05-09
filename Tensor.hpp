@@ -27,34 +27,36 @@ public:
         return result;
     }();
 
-     Tensor(): value(new T[size]) {}
+    Tensor(): value(new T[size]) {}
 
     explicit Tensor(T init): value(new T[size]){
-         std::fill(value, value + size, init);
-     }
+        std::fill(value, value + size, init);
+    }
 
-     Tensor(Tensor && other): value(other.value){
-         other.value = nullptr;
-     }
+    explicit Tensor(T* ptr): value(ptr){}
 
-     Tensor(const Tensor& other): value(new T[size]){
-         memcpy(value, other.value, sizeof(T) * size);
-     }
+    Tensor(Tensor && other): value(other.value){
+        other.value = nullptr;
+    }
 
-     Tensor& operator = (Tensor& other) {
-         memcpy(value, other.value, sizeof(T) * size);
-         return *this;
-     }
+    Tensor(const Tensor& other): value(new T[size]){
+        memcpy(value, other.value, sizeof(T) * size);
+    }
 
-     Tensor& operator = (Tensor && other) {
-         value = other.value;
-         other.value = nullptr;
-         return *this;
-     }
+    Tensor& operator = (Tensor& other) {
+        memcpy(value, other.value, sizeof(T) * size);
+        return *this;
+    }
 
-     ~Tensor(){
-         delete[] value;
-     }
+    Tensor& operator = (Tensor && other) {
+        value = other.value;
+        other.value = nullptr;
+        return *this;
+    }
+
+    ~Tensor(){
+        delete[] value;
+    }
 };
 
 

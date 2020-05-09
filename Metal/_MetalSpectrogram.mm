@@ -68,5 +68,4 @@ struct GPUConfig {
     memcpy(output, outputBuffer.contents, outputBufferSize);
 }
 
-
 @end

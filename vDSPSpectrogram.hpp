@@ -25,12 +25,13 @@ public:
 };
 
 template <unsigned int size, unsigned int nfft, unsigned int noverlap, bool concurrent>
-class RealvDSPSpectrogram: BasevDSPSpectrogram<float, size, nfft, noverlap, concurrent> {
+class RealvDSPSpectrogram: public BasevDSPSpectrogram<float, size, nfft, noverlap, concurrent> {
     static constexpr auto calc = concurrent ? vDSP_Spectrogram_Real_P : vDSP_Spectrogram_Real;
-    using typename BaseSpectrogram<float, size, nfft, noverlap>::OutputMatrix;
 public:
-    OutputMatrix calculate(const Tensor<float, size>& input) override {
-        OutputMatrix output;
+    using typename BaseSpectrogram<float, size, nfft, noverlap>::Output;
+
+    Output calculate(const Tensor<float, size>& input) override {
+        Output output;
         calc(BasevDSPSpectrogram<float, size, nfft, noverlap, concurrent>::setup, input.value, output.value);
         return output;
     }
@@ -38,12 +39,13 @@ public:
 
 
 template <unsigned int size, unsigned int nfft, unsigned int noverlap, bool concurrent>
-class ComplexvDSPSpectrogram: BasevDSPSpectrogram<std::complex<float>, size, nfft, noverlap, concurrent> {
+class ComplexvDSPSpectrogram: public BasevDSPSpectrogram<std::complex<float>, size, nfft, noverlap, concurrent> {
     static constexpr auto calc = concurrent ? vDSP_Spectrogram_Complex_P : vDSP_Spectrogram_Complex;
-    using typename BaseSpectrogram<std::complex<float>, size, nfft, noverlap>::OutputMatrix;
 public:
-    OutputMatrix calculate(const Tensor<std::complex<float>, size>& input) override {
-        OutputMatrix output;
+    using typename BaseSpectrogram<std::complex<float>, size, nfft, noverlap>::Output;
+
+    Output calculate(const Tensor<std::complex<float>, size>& input) override {
+        Output output;
         calc(BasevDSPSpectrogram<std::complex<float>, size, nfft, noverlap, concurrent>::setup, (DSPComplex *)input.value, output.value);
         return output;
     }

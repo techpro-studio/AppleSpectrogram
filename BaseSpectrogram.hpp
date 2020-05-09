@@ -43,10 +43,12 @@ public:
 
     static constexpr unsigned int row = (size - noverlap) /  step;
     static constexpr SpectrogramComputationParameters scp = { .nfft = nfft, .step = step , .outputRow = row, .outputColumn = column, .inputSize = size };
+    
+    static constexpr unsigned int outputSize = row * column;
 
-    typedef Tensor<float, row, column> OutputMatrix;
+    typedef Tensor<float, outputSize> Output;
 
-    virtual OutputMatrix calculate(const Tensor<Input, size>& input) = 0;
+    virtual Output calculate(const Tensor<Input, size>& input) = 0;
 
 };
 
