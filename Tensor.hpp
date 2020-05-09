@@ -33,8 +33,6 @@ public:
         std::fill(value, value + size, init);
     }
 
-    explicit Tensor(T* ptr): value(ptr){}
-
     Tensor(Tensor && other): value(other.value){
         other.value = nullptr;
     }
